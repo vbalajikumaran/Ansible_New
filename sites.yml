@@ -1,0 +1,60 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: install updates (CentOS)
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution =="CentOS"
+  - name: install updates (Ubunt)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution =="Ubuntu"
+     
+- hosts: [web_servers]
+  become: true
+  tasks:  
+
+  - name: install apache and php for Ubuntu and Debian server
+    apt:
+      name:
+        - apache2
+        - libapache2-mod-php
+      state: latest
+      update_cache: yes
+    when: ansible_distribution in ["Ubuntu","Debian"]
+
+  - name: install apache and php for CentOS Server
+    dnf:
+      name:
+        - httpd
+        - php
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+- hosts: [file_servers]
+  become: true
+  tasks:
+
+  - name: install vim-nox for Ubuntu and Debian server
+    apt:
+      name:
+        - vim-nox
+      state: latest
+      update_cache: yes
+    when: ansible_distribution in ["Ubuntu","Debian"]
+
+  - name: install apache and php for CentOS Server
+    dnf:
+      name:
+        - mariadb-server
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+
