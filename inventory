@@ -1,7 +1,11 @@
-[app_servers]
+[db_servers]
 kavnisri@192.168.200.5
 [web_servers]
 nithin@192.168.200.6
 [file_servers]
 kavnisri@192.168.200.5
 nithin@192.168.200.6
+[workstations]
+kavnisri@192.168.200.5
+nithin@192.168.200.6
+
