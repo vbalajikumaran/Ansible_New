@@ -1,43 +1,24 @@
-  - name: install apache and php for Ubuntu and Debian server
+  - name: install apache and php packages 
     tags: apache,apache2,ubuntu
-    apt:
+    package:
       name:
-        - apache2
-        - libapache2-mod-php
+        - "{{ apache_package_name }}"
+        - "{{ php_package_name }}"
       state: latest
-      update_cache: yes
-    when: ansible_distribution in ["Ubuntu","Debian"]
-
+     
+  - name: start and enabled apache service  
+    tags: apache,httpd
+    service:
+      name:
+        "{{ apache_service }}"
+      state: started
+      enabled: yes
+    
   - name: changing email id in /usr/sbin/balaji/file.yml
     tags: apache,apache2,ubuntu
     lineinfile:
       path: /usr/sbin/balaji/file.yml
       regexp: '^email'  # regular expression
-      line: email subhashreegr@gmail.com
+      line: email subhashreegr@gmail.uk
     when: ansible_distribution in ["Ubuntu","Debian"]
-    register: value1
-
-  - name: restarting apache2 after email address has been changed
-    tags: apache,apache2,ubuntu
-    service:
-      name: apache2
-      state: restarted
-    when: value1.changed
-
-  - name: install apache and php for CentOS Server
-    tags: apache2,centos,httpd
-    dnf:
-      name:
-        - httpd
-        - php
-      state: latest
-      update_cache: yes
-    when: ansible_distribution == "CentOS"
-
-  - name: start httpd (CentOS)
-    tags: apache2,centos,httpd
-    service:
-      name: httpd
-      state: started
-      enabled: yes
-    when: ansible_distribution == "CentOS"
+    notify: restart_apache
