@@ -1,0 +1,17 @@
+  - name: install vim-nox for Ubuntu and Debian server
+    tags: ubuntu,vim
+    apt:
+      name:
+        - vim-nox
+      state: latest
+      update_cache: yes
+    when: ansible_distribution in ["Ubuntu","Debian"]
+
+  - name: install apache and php for CentOS Server
+    tags: centos,vim
+    dnf:
+      name:
+        - mariadb-server
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "CentOS"

@@ -1,0 +1,17 @@
+  - name: install samba for Ubuntu and Debian server
+    tags: samba,ubuntu
+    apt:
+      name:
+        - samba
+      state: latest
+      update_cache: yes
+    when: ansible_distribution in ["Ubuntu","Debian"]
+
+  - name: install samba and php for CentOS Server
+    tags: centos,samba
+    dnf:
+      name:
+        - samba
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
